@@ -6,6 +6,11 @@ uniform float u_time;
 uniform float u_radius;
 uniform float u_noise_scale;
 uniform float u_seed_offset; // Use this to vary noise input
+uniform int u_fbm_octaves;
+uniform float u_fbm_initial_amplitude;
+uniform float u_fbm_lacunarity;    // How much frequency increases per octave
+uniform float u_fbm_persistence;   // How much amplitude decreases per octave
+uniform float u_fbm_strength;      // Overall multiplier for the displacement
 
 // Variables passed to the fragment shader
 out float v_height;
@@ -17,16 +22,15 @@ out vec3 v_world_position;
 
 
 // Basic Fractional Brownian Motion (fBm) for more detailed noise
-float fbm(vec3 p, float seed_offset) {
+float fbm(vec3 p_scaled_input, float seed_offset) { // p_scaled_input is normalize(pos) * u_noise_scale
     float total = 0.0;
-    float amplitude = 0.5; // Start with half amplitude
-    float frequency = 1.0;
-    int octaves = 5; // Number of noise layers
+    float current_amplitude = u_fbm_initial_amplitude;
+    float current_frequency = 1.0; // FBM internal frequency starts at 1.0, p is already scaled by u_noise_scale
 
-    for (int i = 0; i < octaves; i++) {
-        total += snoise(p * frequency + vec3(seed_offset)) * amplitude;
-        frequency *= 2.0; // Double frequency
-        amplitude *= 0.5; // Halve amplitude (persistence)
+    for (int i = 0; i < u_fbm_octaves; i++) {
+        total += snoise(p_scaled_input * current_frequency + vec3(seed_offset)) * current_amplitude;
+        current_frequency *= u_fbm_lacunarity;
+        current_amplitude *= u_fbm_persistence;
     }
     return total;
 }
@@ -41,7 +45,7 @@ void main() {
     
     // Apply displacement along the normal
     // Make displacement more pronounced, ensure it's mostly positive for mountains
-    float terrain_height = displacement * 0.3; // Adjust multiplier for terrain ruggedness
+    float terrain_height = displacement * u_fbm_strength; // Adjust multiplier for terrain ruggedness
     
     pos = normalize(pos) * (u_radius + terrain_height);
     

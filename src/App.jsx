@@ -7,8 +7,14 @@ import './App.css'; // Basic styling
 function App() {
   const [planetParams, setPlanetParams] = useState({
     seed: Math.random() * 1000,
-    noiseScale: 5.0,
-    waterLevel: 0.2,
+    noiseScale: 2.00, // Updated
+    waterLevel: 0.48, // Updated
+    // FBM parameters
+    fbmOctaves: 6, // Updated
+    fbmInitialAmplitude: -0.50, // Updated
+    fbmLacunarity: 2.70, // Updated
+    fbmPersistence: 0.70, // Updated
+    fbmStrength: 0.08, // Updated
     // Add more parameters here: colors, atmosphere, etc.
   });
 

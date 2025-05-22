@@ -121,6 +121,12 @@ export default class Planet {
       u_noise_scale: { value: this.params.noiseScale },
       u_seed_offset: { value: this.params.seed }, // Use seed to offset noise input
       u_water_level: { value: this.params.waterLevel },
+      // FBM uniforms
+      u_fbm_octaves: { value: this.params.fbmOctaves || 5 },
+      u_fbm_initial_amplitude: { value: this.params.fbmInitialAmplitude || 0.5 },
+      u_fbm_lacunarity: { value: this.params.fbmLacunarity || 2.0 },
+      u_fbm_persistence: { value: this.params.fbmPersistence || 0.5 },
+      u_fbm_strength: { value: this.params.fbmStrength || 0.3 },
       // Add more uniforms: u_color_deep_water, u_color_shallows, u_color_land_low, etc.
     };
 
@@ -140,6 +146,12 @@ export default class Planet {
     this.uniforms.u_noise_scale.value = this.params.noiseScale;
     this.uniforms.u_seed_offset.value = this.params.seed;
     this.uniforms.u_water_level.value = this.params.waterLevel;
+    // Update FBM uniforms
+    this.uniforms.u_fbm_octaves.value = this.params.fbmOctaves;
+    this.uniforms.u_fbm_initial_amplitude.value = this.params.fbmInitialAmplitude;
+    this.uniforms.u_fbm_lacunarity.value = this.params.fbmLacunarity;
+    this.uniforms.u_fbm_persistence.value = this.params.fbmPersistence;
+    this.uniforms.u_fbm_strength.value = this.params.fbmStrength;
     // Update other uniforms
   }
 
