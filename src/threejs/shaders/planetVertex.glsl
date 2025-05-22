@@ -1,5 +1,3 @@
-#version 300 es
-
 // Standard uniforms for ShaderMaterial in Three.js
 // no need to define position, normal, modelMatrix, etc. as they are provided
 

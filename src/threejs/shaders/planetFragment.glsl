@@ -1,5 +1,3 @@
-#version 300 es
-
 // Custom uniforms
 uniform float u_water_level;
 // Add uniforms for colors:

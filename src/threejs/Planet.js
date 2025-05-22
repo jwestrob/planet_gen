@@ -126,8 +126,9 @@ export default class Planet {
 
     this.material = new THREE.ShaderMaterial({
       uniforms: this.uniforms,
-      vertexShader: glslNoiseFunctions + planetVertexShader, // Prepend noise if defined in GLSL
+      vertexShader: glslNoiseFunctions + planetVertexShader,
       fragmentShader: planetFragmentShader,
+      glslVersion: THREE.GLSL3,
       // wireframe: true, // Useful for debugging
     });
 
