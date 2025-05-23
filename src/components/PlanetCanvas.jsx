@@ -31,11 +31,11 @@ const PlanetCanvas = memo(function PlanetCanvas({ params }) {
   useEffect(() => {
     // Update planet when parameters change
     if (sceneContainerRef.current) {
-      updatePlanetAppearance(sceneContainerRef.current.planet, params);
+      updatePlanetAppearance(sceneContainerRef.current, params);
     }
   }, [params]); // This effect runs when params change
 
-  return <div ref={mountRef} style={{ width: '80vw', height: '70vh', margin: 'auto', border: '1px solid #ccc' }} />;
+  return <div ref={mountRef} style={{ flex: 1, minHeight: '600px' }} />;
 });
 
 export default PlanetCanvas;

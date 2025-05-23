@@ -2,72 +2,160 @@
 
 ## Overview
 
-This project is an interactive procedural planet generator built with Three.js for 3D rendering and React for the user interface. It aims to create visually interesting and eventually scientifically-plausible planetary surfaces based on a variety of configurable parameters.
+This is a comprehensive procedural planet generator built with Three.js and React, capable of creating realistic and exotic planetary worlds with advanced shader-based rendering. The system combines sophisticated terrain generation, atmospheric effects, and a natural language interface to create visually stunning and scientifically-inspired planets.
 
-The generator currently features:
--   A 3D view of a generated planet.
--   Real-time parameter controls to adjust the planet's appearance.
--   Terrain generation using Fractional Brownian Motion (FBM) based on Simplex noise, allowing for detailed and varied landscapes.
--   Configurable FBM parameters including octaves, initial amplitude, lacunarity, persistence, and overall strength.
--   Altitude-based biome coloring, providing distinct visual cues for water bodies, lowlands, highlands, and snow-capped peaks.
+## ✨ Key Features
 
-## Project Vision
+### 🌍 **Advanced Terrain Generation**
+- **Fractional Brownian Motion (FBM)** with configurable parameters
+- **Domain warping** for natural terrain variation
+- **Continental plate simulation** using low-frequency noise
+- **Tectonic ridge generation** for realistic mountain chains
+- **Erosion simulation** and impact crater generation
+- **Multi-layered noise** combining different scales and effects
 
-The long-term vision for this project is to evolve it into a sophisticated tool capable of generating highly realistic and scientifically-informed planetary visuals. This includes:
--   Advanced terrain features (erosion, tectonic-like structures, impact craters).
--   Complex texturing and atmospheric effects (PBR materials, atmospheric scattering, dynamic clouds).
--   Parameterization based on scientific inputs (e.g., chemical balances, size, solar flux, magnetism).
--   Potential integration with specialized Large Language Models (LLMs) to provide expert opinion on planetary appearance based on scientific data.
+### 🎨 **Comprehensive Customization**
+- **Full color control** for all surface materials (water, rock, sand, vegetation, snow, lava)
+- **6 preset color palettes** (Earth-like, Mars-like, Alien Desert, Frozen World, Lava World, Tholin World)
+- **Real-time parameter adjustment** with immediate visual feedback
+- **Advanced atmospheric controls** (density, composition, tinting)
 
-For a detailed plan, see the [PLANET_GENERATION_ROADMAP.md](PLANET_GENERATION_ROADMAP.md) file.
+### 🚀 **Exotic World Types**
+- 🌋 **Lava World** - Molten hellscape with glowing surfaces
+- 🧊 **Ice World** - Frozen planet with glacial formations
+- 🟤 **Tholin World** - Organic haze-covered world (like Titan)
+- 🌙 **Gas Giant Moon** - Tidally locked with extreme geology
+- 🏜️ **Desert World** - Vast sand seas and dust storms
+- 💎 **Crystal World** - Crystalline formations with specular highlights
+- 🌊 **Water World** - Ocean planet with floating continents
+- ☠️ **Toxic World** - Acid rain and poisonous atmosphere
+- 💠 **Carbon World** - Diamond and graphite formations
 
-## Current Status
+### 🗣️ **Natural Language Interface**
+- **Keyword-based planet generation** from descriptive text
+- **Example prompts**: "frozen crystal world with purple atmosphere", "molten lava planet with toxic gases"
+- **Intelligent parameter mapping** that combines multiple environmental factors
+- **Pre-built example prompts** for inspiration
 
-The project is actively under development. Key implemented features include:
--   Core Three.js scene setup for rendering the planet.
--   React components for user interface and parameter controls.
--   Shader-based terrain displacement using FBM.
--   Dynamic parameter updates affecting planet geometry and appearance in real-time.
--   Basic altitude-based coloring in the fragment shader.
+### 🌟 **Advanced Visual Effects**
+- **Atmospheric scattering** with rim lighting effects
+- **Lava glow** with emission mapping for hot worlds
+- **Crystalline formations** with procedural patterns
+- **Organic haze tinting** for exotic atmospheres
+- **Acid corrosion effects** with wear patterns
+- **Dynamic lighting** with hemisphere ambient and directional sun light
 
-## Getting Started
+## 🚀 Getting Started
 
-To run this project locally:
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/your-username/planet-gen.git
+   cd planet-gen
+   ```
 
-1.  **Clone the repository:**
-    ```
-    git clone (repository-url)
-    cd (repository-name)
-    ```
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-2.  **Install dependencies:**
-    ```
-    npm install
-    ```
+3. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
 
-3.  **Start the development server:**
-    ```
-    npm run dev
-    ```
+4. **Open your browser** and navigate to the local address (usually http://localhost:5173)
 
-4.  Open your browser and navigate to the local address provided by Vite (usually http://localhost:5173 or similar).
+## 🎮 How to Use
 
-## Technologies Used
+### Natural Language Generation
+1. Use the **"Describe Your Planet"** text area
+2. Enter descriptions like:
+   - "Ancient desert planet with deep canyons"
+   - "Frozen moon with subsurface oceans"
+   - "Volcanic world with toxic atmosphere"
+3. Click **"Generate Planet"** to apply the description
 
--   **Three.js:** For 3D graphics rendering.
--   **React:** For building the user interface and managing application state.
--   **Vite:** As the build tool and development server.
--   **GLSL:** For writing custom shaders for terrain generation and appearance.
+### Manual Customization
+1. **Color Palette**: Click "🎨 Show Color Palette" to access full color controls
+2. **Advanced Controls**: Click "⚙️ Show Advanced Controls" for exotic world types
+3. **Basic Controls**: Use "Show/Hide Advanced Controls" for terrain parameters
 
-## How to Contribute (Optional - if you plan to open it up)
+### Quick Presets
+- Use **world type buttons** in Advanced Controls for instant exotic worlds
+- Try **color palette presets** for themed color schemes
+- Use **environmental presets** (Frozen, Molten, Toxic, Barren) for quick setups
 
-Details on how to contribute will be added here in the future. For now, feel free to explore the code and experiment with the parameters.
+## 🛠️ Technologies Used
 
-## Future Development
+- **Three.js** - 3D graphics rendering and WebGL shaders
+- **React** - User interface and state management
+- **Vite** - Build tool and development server
+- **GLSL** - Custom vertex and fragment shaders for terrain and effects
 
-Please refer to the [PLANET_GENERATION_ROADMAP.md](PLANET_GENERATION_ROADMAP.md) for a detailed list of planned features and enhancements. The immediate next steps include:
--   Parameterizing the altitude-based biome coloring.
--   Implementing basic atmospheric scattering.
--   Improving water shading.
+## 🏗️ Architecture
+
+The project is structured in three main layers:
+
+### Rendering Layer (`src/threejs/`)
+- `Planet.js` - Main planet mesh with comprehensive shader uniforms
+- `Atmosphere.js` - Atmospheric effects and scattering
+- `sceneManager.js` - Scene setup, lighting, and animation
+- `shaders/` - Advanced GLSL shaders for terrain and materials
+
+### UI Layer (`src/components/`)
+- `PromptInterface.jsx` - Natural language planet generation
+- `ColorPalette.jsx` - Comprehensive color control system
+- `AdvancedControls.jsx` - Exotic world types and parameters
+- `GenerationStatus.jsx` - Visual feedback during generation
+
+### Data Layer (`src/types/`, `src/services/`)
+- `planetParameters.js` - Parameter schema and validation
+- `exoticWorlds.js` - Specialized world type definitions
+- `promptToParameters.js` - Keyword-based natural language processing
+
+## 🔬 Technical Details
+
+### Terrain Generation
+- Uses **3D Simplex noise** with domain warping for natural variation
+- **Continental shelves** created with low-frequency noise layers
+- **Mountain ridges** generated using ridge noise functions
+- **Erosion simulation** based on slope calculations
+- **Impact craters** with realistic bowl and rim shapes
+
+### Shader System
+- **Vertex shader** handles terrain displacement and normal calculation
+- **Fragment shader** manages biome distribution and exotic effects
+- **Uniform system** allows real-time parameter updates
+- **Modular design** with separate terrain function library
+
+### Color System
+- **Full RGB control** for all surface materials
+- **Real-time updates** via WebGL uniforms
+- **Preset management** with themed collections
+- **Hex input support** for precise color specification
+
+## 🚧 Future Development
+
+The roadmap includes:
+- **PBR material system** for more realistic surface rendering
+- **Cloud layer generation** with dynamic weather patterns
+- **Level-of-detail system** for performance optimization
+- **True LLM integration** for more sophisticated natural language processing
+- **Export functionality** for generated planets
+- **Animation system** for dynamic planetary evolution
+
+## 📝 Contributing
+
+See [CLAUDE.md](CLAUDE.md) for detailed development guidance including:
+- Code architecture and patterns
+- Adding new features and world types
+- Shader development guidelines
+- Performance considerations
+
+## 📄 License
+
+This project is open source and available under the MIT License.
 
 ---
+
+**Built with ❤️ using Three.js, React, and advanced shader techniques**

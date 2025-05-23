@@ -3,6 +3,7 @@ import * as THREE from 'three';
 // Shader imports - these files will contain GLSL code
 import planetVertexShader from './shaders/planetVertex.glsl';
 import planetFragmentShader from './shaders/planetFragment.glsl';
+import terrainFunctions from './shaders/terrainFunctions.glsl';
 
 // 3D Simplex noise function implementation (Ashima Arts/Ian McEwan)
 // From https://github.com/ashima/webgl-noise
@@ -127,12 +128,39 @@ export default class Planet {
       u_fbm_lacunarity: { value: this.params.fbmLacunarity || 2.0 },
       u_fbm_persistence: { value: this.params.fbmPersistence || 0.5 },
       u_fbm_strength: { value: this.params.fbmStrength || 0.3 },
-      // Add more uniforms: u_color_deep_water, u_color_shallows, u_color_land_low, etc.
+      // Color uniforms
+      u_water_color: { value: new THREE.Color(this.params.waterColor || '#006994') },
+      u_water_deep_color: { value: new THREE.Color(this.params.waterDeepColor || '#001F3F') },
+      u_sand_color: { value: new THREE.Color(this.params.sandColor || '#C19A6B') },
+      u_grass_color: { value: new THREE.Color(this.params.vegetationColor || '#228B22') },
+      u_rock_color: { value: new THREE.Color(this.params.rockColor || '#8B7355') },
+      u_snow_color: { value: new THREE.Color(this.params.snowColor || '#FFFFFF') },
+      // Biome parameters
+      u_ice_cap_extent: { value: this.params.iceCapExtent || 0.1 },
+      u_vegetation_coverage: { value: this.params.vegetationCoverage || 0.4 },
+      u_desert_amount: { value: this.params.desertification || 0.2 },
+      u_temperature: { value: this.params.temperatureRange || 15 },
+      // Height thresholds
+      u_beach_height: { value: 0.02 },
+      u_grass_height: { value: 0.2 },
+      u_rock_height: { value: 0.35 },
+      u_snow_height: { value: 0.5 },
+      // Advanced terrain parameters
+      u_tectonic_activity: { value: this.params.tectonicActivity || 0.3 },
+      u_erosion_factor: { value: this.params.erosionFactor || 0.0 },
+      u_crater_density: { value: this.params.craterDensity || 0.0 },
+      // Exotic world parameters
+      u_surface_emission: { value: this.params.surfaceEmission || 0.0 },
+      u_lava_flows: { value: this.params.lavaFlows || 0.0 },
+      u_organic_haze: { value: this.params.organicHaze || 0.0 },
+      u_crystalline_formations: { value: this.params.crystallineFormations || 0.0 },
+      u_acid_rain: { value: this.params.acidRain || 0.0 },
+      u_surface_roughness: { value: this.params.surfaceRoughness || 0.5 },
     };
 
     this.material = new THREE.ShaderMaterial({
       uniforms: this.uniforms,
-      vertexShader: glslNoiseFunctions + planetVertexShader,
+      vertexShader: glslNoiseFunctions + terrainFunctions + planetVertexShader,
       fragmentShader: planetFragmentShader,
       glslVersion: THREE.GLSL3,
       // wireframe: true, // Useful for debugging
@@ -147,12 +175,38 @@ export default class Planet {
     this.uniforms.u_seed_offset.value = this.params.seed;
     this.uniforms.u_water_level.value = this.params.waterLevel;
     // Update FBM uniforms
-    this.uniforms.u_fbm_octaves.value = this.params.fbmOctaves;
-    this.uniforms.u_fbm_initial_amplitude.value = this.params.fbmInitialAmplitude;
-    this.uniforms.u_fbm_lacunarity.value = this.params.fbmLacunarity;
-    this.uniforms.u_fbm_persistence.value = this.params.fbmPersistence;
-    this.uniforms.u_fbm_strength.value = this.params.fbmStrength;
-    // Update other uniforms
+    this.uniforms.u_fbm_octaves.value = this.params.fbmOctaves || 5;
+    this.uniforms.u_fbm_initial_amplitude.value = this.params.fbmInitialAmplitude || 0.5;
+    this.uniforms.u_fbm_lacunarity.value = this.params.fbmLacunarity || 2.0;
+    this.uniforms.u_fbm_persistence.value = this.params.fbmPersistence || 0.5;
+    this.uniforms.u_fbm_strength.value = this.params.fbmStrength || 0.3;
+    
+    // Update color uniforms
+    if (this.params.waterColor) this.uniforms.u_water_color.value = new THREE.Color(this.params.waterColor);
+    if (this.params.waterDeepColor) this.uniforms.u_water_deep_color.value = new THREE.Color(this.params.waterDeepColor);
+    if (this.params.sandColor) this.uniforms.u_sand_color.value = new THREE.Color(this.params.sandColor);
+    if (this.params.vegetationColor) this.uniforms.u_grass_color.value = new THREE.Color(this.params.vegetationColor);
+    if (this.params.rockColor) this.uniforms.u_rock_color.value = new THREE.Color(this.params.rockColor);
+    if (this.params.snowColor) this.uniforms.u_snow_color.value = new THREE.Color(this.params.snowColor);
+    
+    // Update biome parameters
+    if (typeof this.params.iceCapExtent !== 'undefined') this.uniforms.u_ice_cap_extent.value = this.params.iceCapExtent;
+    if (typeof this.params.vegetationCoverage !== 'undefined') this.uniforms.u_vegetation_coverage.value = this.params.vegetationCoverage;
+    if (typeof this.params.desertification !== 'undefined') this.uniforms.u_desert_amount.value = this.params.desertification;
+    if (typeof this.params.temperatureRange !== 'undefined') this.uniforms.u_temperature.value = this.params.temperatureRange;
+    
+    // Update advanced terrain parameters
+    if (typeof this.params.tectonicActivity !== 'undefined') this.uniforms.u_tectonic_activity.value = this.params.tectonicActivity;
+    if (typeof this.params.erosionFactor !== 'undefined') this.uniforms.u_erosion_factor.value = this.params.erosionFactor;
+    if (typeof this.params.craterDensity !== 'undefined') this.uniforms.u_crater_density.value = this.params.craterDensity;
+    
+    // Update exotic world parameters
+    if (typeof this.params.surfaceEmission !== 'undefined') this.uniforms.u_surface_emission.value = this.params.surfaceEmission;
+    if (typeof this.params.lavaFlows !== 'undefined') this.uniforms.u_lava_flows.value = this.params.lavaFlows;
+    if (typeof this.params.organicHaze !== 'undefined') this.uniforms.u_organic_haze.value = this.params.organicHaze;
+    if (typeof this.params.crystallineFormations !== 'undefined') this.uniforms.u_crystalline_formations.value = this.params.crystallineFormations;
+    if (typeof this.params.acidRain !== 'undefined') this.uniforms.u_acid_rain.value = this.params.acidRain;
+    if (typeof this.params.surfaceRoughness !== 'undefined') this.uniforms.u_surface_roughness.value = this.params.surfaceRoughness;
   }
 
   // Optional: if you want the planet to animate itself (e.g. u_time for evolving noise)
